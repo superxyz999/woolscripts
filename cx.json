@@ -51,6 +51,11 @@
       "enable": true
     },
     {
+      "match": "https://user.youth.cn/v1/Nameless/adlickstart.json",
+      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/zq_speed_kkz.js",
+      "enable": true
+    },
+    {
       "match": "https://qjp.qujianpan.com/qjp-app/game/savingsBank/collectPigMoney",
       "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qjp/qjp.js",
       "enable": true
