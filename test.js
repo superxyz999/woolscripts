@@ -1,4 +1,4 @@
 require('dotenv').config()
-var appname = process.env.APP_NAME
+var jsfile = process.env.JSFile
 
-require(`./${appname}/${appname}.js`)
+require(`./${jsfile}.js`)

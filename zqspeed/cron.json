@@ -57,6 +57,15 @@
           "type": "runjs",
           "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/zqspeed/zq_speed_tx.js"
         }
+      },
+      {
+        "name": "中青极速版看看赚",
+        "type": "cron",
+        "time": "30 12 * * *",
+        "job": {
+          "type": "runjs",
+          "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/zqspeed/zq_speed_kkz.js"
+        }
       }
     ]
   }
