@@ -89,6 +89,14 @@
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/gdbh/gdbh.js"
       }
+    },{
+      "name": "萤石云",
+      "type": "cron",
+      "time": "0 6-23 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/ysy/ysy.js"
+      }
     }
   ]
 }
