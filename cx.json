@@ -7,7 +7,8 @@
     "user.youth.cn",
     "qjp.qujianpan.com",
     "proxy.guodongbaohe.com",
-    "api.ys7.com"
+    "api.ys7.com",
+    "aiqicha.baidu.com"
   ],
   "rewrite": [
     {
@@ -83,6 +84,11 @@
     {
       "match": "https://api.ys7.com/v3/integral/yd/pay",
       "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/ysy/ysy.js",
+      "enable": true
+    },
+    {
+      "match": "https://aiqicha.baidu.com/zxcenter",
+      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js",
       "enable": true
     }
   ]

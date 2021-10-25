@@ -111,6 +111,15 @@
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/ysy/ysy.js"
       }
+    },
+    {
+      "name": "爱企查",
+      "type": "cron",
+      "time": "0 7,14 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js"
+      }
     }
   ]
 }
