@@ -1,9 +1,10 @@
 /*
- cron 0 * 8,16,21 * * ? https://ghproxy.com/github.com/WindFgg/QuantumultX_Conf/blob/main/Scripts/aiqicha.js 爱企查日常任务
- 邀请链接：https://aiqicha.baidu.com/m/usercenter/inviteCode?uid=xlTM-TogKuTwvdzTq9EFdGvdxrmJpAANFgmd
+0 0,30 8 * * ? https://ghproxy.com/github.com/WindFgg/QuantumultX_Conf/blob/main/Scripts/aiqicha.js 爱企查日常任务
+ 爱企查下载地址：https://aiqicha.baidu.com/m/usercenter/inviteCode?uid=xlTM-TogKuTwvdzTq9EFdGvdxrmJpAANFgmd
 
- 每天执行三次 可能有一些任务跑不完 如:高级搜索 浏览监控日报 属正常现象 (百度抽风)
- 多账号请用@分割Cookie  格式:ck1@ck2@ck2 青龙变量aqcCookies qx和v2p暂时不可使用
+ 手动抓取CK:https://passport.baidu.com/v2/?login 一个BDUSS=xxxxx;就行了
+ 定时每天早上8点执行一次 8点半执行一次 账号多的请加大延迟 可能有一些任务跑不完 如:高级搜索 浏览监控日报 属正常现象 (百度抽风)
+ 多账号请用@分割Cookie  格式:ck1@ck2@ck2 青龙变量aqcCookies qx和v2p不可用
  批量查询任务暂时无法完成 
  感谢Wenmoux的爱妻查任务脚本 Wenmoux github地址:https://github.com/Wenmoux/checkbox 作者仅完善和修改
 */
@@ -45,7 +46,23 @@ const headers = {
 };
 
 function rand() {
-  let key = ["苹果", "华为", "百度", "一个", "暴风", "王者"];
+  let key = [
+    "金",
+    "新",
+    "中",
+    "盛",
+    "亚",
+    "信",
+    "华",
+    "豪",
+    "奥",
+    "凯",
+    "泰",
+    "鑫",
+    "创",
+    "宝",
+    "星",
+  ];
   let i = Math.floor(Math.random() * key.length);
   return key[i];
 }
@@ -91,6 +108,9 @@ async function getaskList() {
     `共 ${alltaskList.length}任务 已完成 ${ytaskList.length} 任务 可做 ${taskList.length}任务 ${claimList.length}任务可领取奖励`
   );
 }
+function radomTimers() {
+  return Math.floor(Math.random() * (20000 - 5000) + 1);
+}
 
 async function dotask(taskList) {
   for (var o of taskList) {
@@ -105,7 +125,7 @@ async function dotask(taskList) {
       case "CX11001": //查询企业
         console.log("开始任务：" + oo[o.title]);
         await get(`s/getHeadBrandAndPersonAjax?q=${encodeURI(rand())}`, "get");
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX11002": //查询老板
         console.log("开始任务：" + oo[o.title]);
@@ -113,7 +133,7 @@ async function dotask(taskList) {
           `person/relevantPersonalAjax?page=1&q=${encodeURI(rand())}&size=10`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX11003": //查询老赖
         console.log("开始任务：" + oo[o.title]);
@@ -123,7 +143,7 @@ async function dotask(taskList) {
           )}&t=8&s=10&p=1&f=%7B%22type%22:%221%22%7D`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX11004": //查询商标
         console.log("开始任务：" + oo[o.title]);
@@ -131,7 +151,7 @@ async function dotask(taskList) {
           `c/markproAjax?q=${encodeURI(rand())}&p=1&s=10&f=%7B%7D&o=%7B%7D`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX11005": //查询地图
         console.log("开始任务：" + oo[o.title]);
@@ -139,7 +159,7 @@ async function dotask(taskList) {
           `map/getAdvanceFilterListAjax?longitude=113.76343399&latitude=23.04302382&distance=2&page=1`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX11006": //浏览新闻
         console.log("开始任务：" + oo[o.title]);
@@ -170,16 +190,18 @@ async function dotask(taskList) {
           `relations/findrelationsAjax?from=e07a8ef1409bff3987f1b28d118ff826&to=6f5966de4af2eb29085ffbcc9cc0116a&pathNum=10`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
+      /*
       case "CX11010": //批量查询
         console.log("开始任务：" + oo[o.title]);
         await get(
           `batchquery/show?exportkey=xlTM-TogKuTwFXlQeIXL0-Z9C*YO4vCwtkRdM7XV9*7FpZRZtSR8*2qgItOy*xqmSxZSsju-YgmZmd`,
           "get"
         );
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
+      */
       case "CX12001": //添加监控
         console.log("开始任务：" + oo[o.title]);
         for (id of [
@@ -189,13 +211,13 @@ async function dotask(taskList) {
         }
         await get(`zxcenter/addMonitorAjax?pid=29710155220353`, "get");
         await get(`zxcenter/cancelMonitorAjax?pid=29710155220353`, "get");
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX12002": //添加关注
         console.log("开始任务：" + oo[o.title]);
         await get(`my/addCollectAjax`, "post", `pid=34527616977197`);
         await get(`my/delCollectAjax`, "post", `pid=34527616977197`);
-        await sleep(5000);
+        await sleep(radomTimers());
         break;
       case "CX12005": //分享好友
         console.log("开始任务：" + oo[o.title]);
@@ -210,7 +232,7 @@ async function dotask(taskList) {
           await get(`m/?uid=${uid}`, "get");
           await get(`m/getuserinfoAjax?uid=${uid}`, "get");
           headers.cookie = aqcookie;
-          await sleep(500);
+          await sleep(radomTimers());
         }
         break;
       case "CX12007": //高级搜索
@@ -222,6 +244,7 @@ async function dotask(taskList) {
           "get"
         );
         break;
+      /*
       case "CX12008": //高级筛选
         console.log("开始任务：" + oo[o.title]);
         await get(
@@ -229,10 +252,11 @@ async function dotask(taskList) {
           "get"
         );
         break;
+      */
       default:
         break;
     }
-    await sleep(5000);
+    await sleep(radomTimers());
     console.log("  去领取爱豆");
     let clres = await get(
       `zxcenter/claimUserTaskAjax?taskCode=${o.title}`,
@@ -287,8 +311,7 @@ async function aqc() {
       }
     }
   } else {
-    msg +=
-      "请手动抓取cookies";
+    msg += "请手动抓取cookies";
   }
   console.log(msg);
   await notify.sendNotify($.name, msg);
@@ -306,9 +329,7 @@ if (aqcookie) {
   aqc();
   //console.log("爱企查共:" + aqcookieArr.length + "个账号");
 } else {
-  console.log(
-    "请手动抓取cookies"
-  );
+  console.log("请手动抓取cookies");
   return;
 }
 

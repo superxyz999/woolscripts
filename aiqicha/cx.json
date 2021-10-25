@@ -1,0 +1,11 @@
+{
+    "name": "爱企查",
+    "author": "elecV2p",
+    "mitmhost": ["aiqicha.baidu.com"],
+    "rewrite": [{
+            "match": "https://aiqicha.baidu.com/zxcenter",
+            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js",
+            "enable": true
+        }
+    ]
+}
