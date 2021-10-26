@@ -10,7 +10,7 @@
         "time": "0 7,14 * * *",
         "job": {
           "type": "runjs",
-          "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/kuaishou.js"
+          "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/kuaishou2.js"
         }
       }
     ]
