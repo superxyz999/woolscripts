@@ -1,15 +1,10 @@
 {
     "name": "快手",
     "author": "elecV2p",
-    "mitmhost": ["nebula.kuaishou.com","activity.m.kuaishou.com"],
+    "mitmhost": ["activity.m.kuaishou.com"],
     "rewrite": [{
-            "match": "https:\/\/activity\.m\.kuaishou\.com\/rest\/wd\/taskCenter\/\w+\/module\/list",
-            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/kuaishou2.js",
-            "enable": true
-        },
-        {
-            "match": "https:\/\/nebula\.kuaishou\.com\/nebula\/task\/earning\?",
-            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/kuaishou2.js",
+            "match": "https://activity.m.kuaishou.com/rest/wd/activity/tag/signInDaily/startup",
+            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/kuaishou.js",
             "enable": true
         }
     ]
