@@ -8,7 +8,7 @@
 
 const $ = new Env('快手视频')
 let cookieArr = [];
-let ks_tokens = $.getdata('cookie_ks');
+let ks_tokens = $.getdata('ks_cookie');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const nebulaCash = $.getdata('cash_nebulaks')||"10";
 const cashType = $.getdata('tpcash_nebula')||"ALIPAY";
@@ -324,7 +324,7 @@ function GetCookie() {
   var UA = $request.headers['User-Agent']
   if ($request && $request.method != `OPTIONS` && UA.indexOf('ksNebula') > -1) {
     const cookieVal = $request.headers['Cookie']
-    if (cookieVal) $.setdata(cookieVal, 'cookie_ks');
+    if (cookieVal) $.setdata(cookieVal, 'ks_cookie');
      $.log(`${$.name}获取Cookie: 成功, cookieVal: $ {cookieVal}`);
      $.msg($.name, `获取极速Cookie: 成功🎉`, ``)
   } else if ($request && $request.method != `OPTIONS` && UA.indexOf("ksNebula") == -1) {
@@ -336,12 +336,12 @@ function GetCookie() {
         $.log("cookie重复，已跳过")
       } else if (ks_tokens.indexOf(uid) == -1) {
         Cookies = ks_tokens + "&" + cookieVal;
-        $.setdata(Cookies, 'cookie_ks');
+        $.setdata(Cookies, 'ks_cookie');
         ck = Cookies.split("&");
         $.msg($.name, "获取正式版Cookie" + ck.length + ": 成功🎉", ``)
       }
     } else {
-      $.setdata(cookieVal, 'cookie_ks');
+      $.setdata(cookieVal, 'ks_cookie');
       $.msg($.name, `获取正式版Cookie: 成功🎉`, ``)
     }
   }
