@@ -1,0 +1,11 @@
+{
+    "name": "趣看行情",
+    "author": "elecV2p",
+    "mitmhost": ["equities.sunwaystech.com"],
+    "rewrite": [{
+            "match": "https://equities.sunwaystech.com/guess",
+            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qkhq/qkhq.js",
+            "enable": true
+        }
+    ]
+}
