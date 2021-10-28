@@ -8,7 +8,8 @@
     "qjp.qujianpan.com",
     "proxy.guodongbaohe.com",
     "api.ys7.com",
-    "aiqicha.baidu.com"
+    "aiqicha.baidu.com",
+    "equities.sunwaystech.com"
   ],
   "rewrite": [
     {
@@ -89,6 +90,11 @@
     {
       "match": "https://aiqicha.baidu.com/zxcenter",
       "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js",
+      "enable": true
+    },
+    {
+      "match": "https://equities.sunwaystech.com/guess",
+      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qkhq/qkhq.js",
       "enable": true
     }
   ]
