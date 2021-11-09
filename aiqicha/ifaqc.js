@@ -77,6 +77,10 @@ function rand() {
         8 * 60 * 60 * 1000
       ).toLocaleString()} ============\n`);
     console.log(`共有【${aqcckArr.length}】个账号`);
+    var max = 10 * 60 * 1000;
+    var min = 5 * 60 * 1000;
+    var waitingTime = parseInt(Math.random() * (max - min + 1) + min, 10);
+
     for (let i = 0; i < aqcckArr.length; i++) {
       if (aqcckArr[i]) {
         aqcck = aqcckArr[i];
@@ -87,11 +91,9 @@ function rand() {
         taskList = [];
         claimList = [];
         alltaskList = [];
-        await aqccxrw(`${$.index}`);
-        var max = 10 * 60 * 1000;
-        var min = 5 * 60 * 1000;
-        var waitingTime = parseInt(Math.random() * (max - min + 1) + min, 10);
         await $.wait(waitingTime);
+        await aqccxrw(`${$.index}`);
+        await $.wait(30000);
         await zxrw();
         console.log(`等待30秒后重新查询`)
         await $.wait(30000);
