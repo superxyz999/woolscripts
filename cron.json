@@ -124,7 +124,7 @@
     {
       "name": "趣看行情",
       "type": "cron",
-      "time": "20 10 20 * * *",
+      "time": "0 0 8,16 * * *",
       "job": {
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qkhq/qkhq.js"
