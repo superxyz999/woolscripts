@@ -43,7 +43,7 @@ let mrrw = {
   CX12009: "浏览互助",
   // CX12011: "点赞观点",
 };
-
+mrrw = shuffle(mrrw);
 const aqchd = {
   "User-Agent":
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Safari/537.36",
@@ -60,6 +60,9 @@ function rand() {
   return key[i];
 }
 
+function shuffle(arr) {
+  return arr.sort(() => (Math.random() - 0.5))
+}
 
 !(async () => {
   if (typeof $request !== "undefined") {
@@ -77,7 +80,7 @@ function rand() {
         8 * 60 * 60 * 1000
       ).toLocaleString()} ============\n`);
     console.log(`共有【${aqcckArr.length}】个账号`);
-    var max = 10 * 60 * 1000;
+    var max = 20 * 60 * 1000;
     var min = 5 * 60 * 1000;
     var waitingTime = parseInt(Math.random() * (max - min + 1) + min, 10);
 

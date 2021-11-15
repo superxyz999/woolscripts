@@ -90,11 +90,19 @@ const defaultTx = 5;
                 const account = accounts[index];
                 const result = results[index];
                 if (account.disable) {
-                    resultMessage = `${resultMessage} \n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`
-                    console.log(`\n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`)
+                    if (account.notxck && account.candrawalQuota > 0) {
+                        resultMessage = `${resultMessage} \n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`
+                        console.log(`\n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`)
+                    }
+                    else {
+                        resultMessage = `${resultMessage} \n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`
+                        console.log(`\n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`)
+                    }
+
                 } else {
                     account.isSucess = result;
-                    resultMessage = resultMessage + `\n${account.desc}提现￥${account.txAmount}}${result ? "成功" : "失败"}`
+
+                    resultMessage = `${resultMessage} \n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`
                     console.log(`\n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`)
                 }
             }
@@ -111,8 +119,9 @@ const defaultTx = 5;
         var endTime = new Date()
         if (endTime.getHours() >= 20) {
             var failAccounts = accounts.filter(x => !x.hadTx && !x.isSucess);
+            debugger
             if (failAccounts.length > 0) {
-                console.log("\n 对失败账号随机提现！")
+                console.log("\n 对今天没有提现的账号随机提现！")
                 totalMessage = totalMessage + "\n随即提现："
                 var rantTxPromise = []
                 var rantTxAccounts = []
@@ -154,46 +163,57 @@ const defaultTx = 5;
 })();
 
 async function tixian(account, isrant = false) {
-    if (typeof account.disable === 'boolean' && account.disable) {
+    if (!isrant && typeof account.disable === 'boolean' && account.disable) {
         return false
     }
 
+    /**
+     * @type string[]
+     */
     var qiangouparas = []
     if (isrant)
         qiangouparas.push(account.randTx)
     else
         qiangouparas = account[account.txCode];
-    account.count = qiangouparas.length
-    const headers = getHeader(account)
-    var isSucess = false
-    var currentIndex = 0
-    let promise = new Promise((resolve, reject) => {
-        //每200毫秒执行一次
-        account.intervalId = setInterval(async () => {
-            if (account.hadTx)
-                resolve(false)
-            if (currentIndex + 1 <= account.count) {
-                const para = qiangouparas[currentIndex]
-                currentIndex++
-                const url = `http://pay.gaoqingdianshi.com/api/v2/cash/withdrawal?${para}`
-                var result = await axios.get(url, { headers })
-                if (result.data.errCode == 0) {
-                    account.txAmount = result.data.data.price / 100
-                    console.log(`\n账号${account.desc}提现￥${account.txAmount}成功！`)
-                    isSucess = true;
+    if (qiangouparas.length > 0) {
+
+        account.count = qiangouparas.length
+        const headers = getHeader(account)
+        var isSucess = false
+        var currentIndex = 0
+        let promise = new Promise((resolve, reject) => {
+            //每200毫秒执行一次
+            account.intervalId = setInterval(async () => {
+                if (account.hadTx)
+                    resolve(false)
+                if (currentIndex + 1 <= account.count) {
+                    const para = qiangouparas[currentIndex]
+                    currentIndex++
+                    const url = `http://pay.gaoqingdianshi.com/api/v2/cash/withdrawal?${para}`
+                    var result = await axios.get(url, { headers })
+                    if (result.data.errCode == 0) {
+                        account.txAmount = result.data.data.price / 100
+                        console.log(`\n账号${account.desc}提现￥${account.txAmount}成功！`)
+                        isSucess = true;
+                    }
+                    else
+                        console.log(`\n账号${account.desc}提现￥${account.txAmount ? account.txAmount : defaultTx}：-${result.data.msg}！`)
+
+                    if (currentIndex >= account.count || isSucess)
+                        resolve(isSucess)
                 }
-                else
-                    console.log(`\n账号${account.desc}提现￥${account.txAmount ? account.txAmount : defaultTx}：-${result.data.msg}！`)
+            }, 200);
+        }).finally(() => {
+            clearInterval(account.intervalId)
+        })
 
-                if (currentIndex >= account.count || isSucess)
-                    resolve(isSucess)
-            }
-        }, 200);
-    }).finally(() => {
-        clearInterval(account.intervalId)
-    })
-
-    return promise;
+        return promise;
+    }
+    else {
+        account.disable = true
+        account.notxck = true
+        return Promise.resolve(false)
+    }
     // return Promise.resolve(isSucess);
 }
 /**
