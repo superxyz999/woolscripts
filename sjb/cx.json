@@ -1,0 +1,11 @@
+{
+    "name": "睡觉宝",
+    "author": "elecV2p",
+    "mitmhost": ["mapi.shuijiaobao.cn"],
+    "rewrite": [{
+            "match": "https://mapi.shuijiaobao.cn/login/code",
+            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/sjb/sjb.js",
+            "enable": true
+        }
+    ]
+}
