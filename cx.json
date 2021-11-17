@@ -5,7 +5,6 @@
     "mspace.gmmc.com.cn",
     "api.st615.com",
     "user.youth.cn",
-    "qjp.qujianpan.com",
     "proxy.guodongbaohe.com",
     "api.ys7.com",
     "aiqicha.baidu.com",
@@ -55,16 +54,6 @@
     {
       "match": "https://user.youth.cn/v1/Nameless/adlickstart.json",
       "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/zqspeed/zq_speed_kkz.js",
-      "enable": true
-    },
-    {
-      "match": "https://qjp.qujianpan.com/qjp-app/game/savingsBank/collectPigMoney",
-      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qjp/qjp.js",
-      "enable": true
-    },
-    {
-      "match": "https://qjp.qujianpan.com/qjp-app/game/savingsBank4App/collectPigMoney",
-      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qjp/qjp.js",
       "enable": true
     },
     {

@@ -43,7 +43,6 @@ let mrrw = {
   CX12009: "浏览互助",
   // CX12011: "点赞观点",
 };
-mrrw = shuffle(mrrw);
 const aqchd = {
   "User-Agent":
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Safari/537.36",
@@ -59,7 +58,11 @@ function rand() {
   let i = Math.floor(Math.random() * key.length);
   return key[i];
 }
-
+/**
+ * 
+ * @param {any[]} arr 
+ * @returns 
+ */
 function shuffle(arr) {
   return arr.sort(() => (Math.random() - 0.5))
 }
@@ -80,9 +83,10 @@ function shuffle(arr) {
         8 * 60 * 60 * 1000
       ).toLocaleString()} ============\n`);
     console.log(`共有【${aqcckArr.length}】个账号`);
-    var max = 20 * 60 * 1000;
+    var max = 120 * 60 * 1000;
     var min = 5 * 60 * 1000;
     var waitingTime = parseInt(Math.random() * (max - min + 1) + min, 10);
+    await $.wait(waitingTime);
 
     for (let i = 0; i < aqcckArr.length; i++) {
       if (aqcckArr[i]) {
@@ -94,7 +98,6 @@ function shuffle(arr) {
         taskList = [];
         claimList = [];
         alltaskList = [];
-        await $.wait(waitingTime);
         await aqccxrw(`${$.index}`);
         await $.wait(30000);
         await zxrw();
@@ -263,7 +266,9 @@ async function aqccxrw(api, timeout = 0) {
         test = JSON.parse(data)
         let obj = test.data
         if (test.status == 0) {
-          Object.keys(obj).forEach(function (key) {
+          var taskKeys = Object.keys(obj)
+          taskKeys = shuffle(taskKeys)
+          taskKeys.forEach(function (key) {
             if (mrrw[key]) {
               let task = obj[key]
               task.title = key
