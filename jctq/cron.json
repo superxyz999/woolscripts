@@ -1,0 +1,44 @@
+{
+  "name": "晶彩天气",
+  "author": "zack",
+  "note": "xx 导出的任务订阅。该订阅适用于 elecV2P，与其他软件并不兼容。相关说明参考：https://github.com/elecV2/elecV2P-dei/tree/master/docs/06-task.md",
+  "date": "2021-10-07 20:25:08",
+  "list": [
+    {
+      "name": "晶彩天气看看赚",
+      "type": "cron",
+      "time": "30 9,20 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_kkz.js"
+      }
+    },
+    {
+      "name": "晶彩天气文章视频",
+      "type": "cron",
+      "time": "20 7,18 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_read.js"
+      }
+    },
+    {
+      "name": "晶彩天气日常任务",
+      "type": "cron",
+      "time": "15,45 * * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_daily.js"
+      }
+    },
+    {
+      "name": "晶彩天气任务签到",
+      "type": "cron",
+      "time": "30 22 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_reward.js"
+      }
+    }
+  ]
+}
