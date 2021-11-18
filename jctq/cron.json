@@ -39,6 +39,15 @@
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_reward.js"
       }
+    },
+    {
+      "name": "晶彩天气转发",
+      "type": "cron",
+      "time": "30 16 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_shareRead.js"
+      }
     }
   ]
 }
