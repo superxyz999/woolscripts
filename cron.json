@@ -120,6 +120,51 @@
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/qkhq/qkhq.js"
       }
+    },
+    {
+      "name": "晶彩天气看看赚",
+      "type": "cron",
+      "time": "30 9,20 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_kkz.js"
+      }
+    },
+    {
+      "name": "晶彩天气文章视频",
+      "type": "cron",
+      "time": "20 7,18 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_read.js"
+      }
+    },
+    {
+      "name": "晶彩天气日常任务",
+      "type": "cron",
+      "time": "15,45 * * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_daily.js"
+      }
+    },
+    {
+      "name": "晶彩天气任务签到",
+      "type": "cron",
+      "time": "30 22 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_reward.js"
+      }
+    },
+    {
+      "name": "晶彩天气转发",
+      "type": "cron",
+      "time": "30 16 * * *",
+      "job": {
+        "type": "runjs",
+        "target": "https://raw.githubusercontent.com/leafxcy/JavaScript/main/jctq/jctq_shareRead.js"
+      }
     }
   ]
 }
