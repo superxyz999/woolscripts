@@ -276,7 +276,7 @@ function calcTXCode(account, withdrawalQuota) {
     var warningUnConfigStep = ""
     for (let index = 0; index < canTxSteps.length; index++) {
         const txStepCode = TxMap[canTxSteps[index]];
-        if (typeof account[txStepCode] !== 'undefined') {
+        if (typeof account[txStepCode] !== 'undefined'&&account[txStepCode].length>0) {
             return { warningUnConfigStep: warningUnConfigStep, txStepCode: txStepCode, candrawalQuota: canTxSteps[index] }
         }
         else if (index == 0)
