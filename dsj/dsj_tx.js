@@ -1,7 +1,7 @@
 /*
 [task_local]
 #电视家提现
-58 59 11,19 * * * https://raw.githubusercontent.com/sonce/woolscripts/main/dsj/dsj_tx.js, tag=电视家提现, enabled=true
+58 59 0-20 * * * https://raw.githubusercontent.com/sonce/woolscripts/main/dsj/dsj_tx.js, tag=电视家提现, enabled=true
 */
 'use strict';
 const axios = require('axios');
@@ -9,6 +9,10 @@ const { resolve } = require('path');
 const dsjCookie = require('./dsjCOOKIE')
 const $ = new Env('电视家提现');
 const notify = $.isNode() ? require('./sendNotify') : '';
+/**
+ * 提现类型：0：普通，1：随机
+ */
+const txType = 1;
 
 let defaultHeader = {
     'systemSdkVersion': 29,
@@ -173,8 +177,13 @@ async function tixian(account, isrant = false) {
     var qiangouparas = []
     if (isrant)
         qiangouparas.push(account.randTx)
-    else
+    else {
         qiangouparas = account[account.txCode];
+        if (txType == 1) {
+            let i = Math.floor(Math.random() * qiangouparas.length);
+            qiangouparas = [qiangouparas[i]];
+        }
+    }
     if (qiangouparas.length > 0) {
 
         account.count = qiangouparas.length
@@ -276,7 +285,7 @@ function calcTXCode(account, withdrawalQuota) {
     var warningUnConfigStep = ""
     for (let index = 0; index < canTxSteps.length; index++) {
         const txStepCode = TxMap[canTxSteps[index]];
-        if (typeof account[txStepCode] !== 'undefined'&&account[txStepCode].length>0) {
+        if (typeof account[txStepCode] !== 'undefined' && account[txStepCode].length > 0) {
             return { warningUnConfigStep: warningUnConfigStep, txStepCode: txStepCode, candrawalQuota: canTxSteps[index] }
         }
         else if (index == 0)
