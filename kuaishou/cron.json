@@ -21,6 +21,15 @@
           "type": "runjs",
           "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/ks_fruit.js"
         }
+      },
+      {
+        "name": "快手极速版",
+        "type": "cron",
+        "time": "30 6-16 * * *",
+        "job": {
+          "type": "runjs",
+          "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/kuaishou/ks_js.js"
+        }
       }
     ]
   }
