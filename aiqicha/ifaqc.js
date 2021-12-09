@@ -1,11 +1,14 @@
 /*
-10.18
 
 软件：  爱企查
 收益：  每天250左右爱豆
 注意事项 ： 运行js时不要打开软件app
 
 获取ck：  打开软件点击我的，右上角签到即可获取
+
+支持V2P,青龙
+
+之前黑过，所以增加延后随机登录，签到，做任务，仿真。所以执行时间会比较久。
 
 重写：
 QX重写：https://aiqicha.baidu.com/zxcenter url script-request-header ifaqc.js
@@ -19,9 +22,17 @@ let status;
 
 status = (status = ($.getval("aqcstatus") || "1")) > 1 ? `${status}` : "";
 
-const aqcckArr = [], aqccount = ''
+let aqcckArr = []
 
-let aqcck = $.getdata('aqcck')
+let aqcck = $.isNode() ? (process.env.aqcCookies ? process.env.aqcCookies : "") : ($.getdata('aqcck') ? $.getdata('aqcck') : "")
+if (aqcck) {
+  if (aqcck.indexOf("@") == -1) {
+    aqcckArr.push(aqcck)
+  } else {
+    aqcckArr = aqcck.split("@");
+    console.log(`您选择的是用"@"隔开\n`)
+  }
+}
 let aqctz = ($.getval('aqctz') || '1');
 $.message = '';
 
@@ -54,7 +65,7 @@ const aqchd = {
 };
 
 function rand() {
-  let key = ["苹果", "华为", "百度", "一个", "暴风", "王者","江胜","阿里巴巴","宁德时代","腾讯","万科","恒大","字节跳动","OPPO","小米","TCL","京东","华为","小霸王"];
+  let key = ["苹果", "华为", "百度", "一个", "暴风", "王者", "江胜", "阿里巴巴", "宁德时代", "腾讯", "万科", "恒大", "字节跳动", "OPPO", "小米", "TCL", "京东", "华为", "小霸王"];
   let i = Math.floor(Math.random() * key.length);
   return key[i];
 }
@@ -71,11 +82,6 @@ function shuffle(arr) {
   if (typeof $request !== "undefined") {
     aqchqck()
   } else {
-    aqcckArr.push($.getdata('aqcck'))
-    let aqccount = ($.getval('aqccount') || '1');
-    for (let i = 2; i <= aqccount; i++) {
-      aqcckArr.push($.getdata(`aqcck${i}`))
-    }
     console.log(
       `\n============ 脚本执行 - 北京时间(UTC+8)：${new Date(
         new Date().getTime() +
