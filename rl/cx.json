@@ -1,0 +1,11 @@
+{
+  "name": "燃旅",
+  "mitmhost": ["ranlv.lvfacn.com"],
+  "rewrite": [
+    {
+      "match": "https://ranlv.lvfacn.com/api.php/*",
+      "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/rl/rl.js",
+      "enable": true
+    }
+  ]
+}

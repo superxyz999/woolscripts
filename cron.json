@@ -8,6 +8,7 @@
       "name": "广汽三菱",
       "type": "cron",
       "time": "0 6 * * *",
+      "running": false,
       "job": {
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/gqsl/gqsl.js"
@@ -107,6 +108,7 @@
       "name": "爱企查",
       "type": "cron",
       "time": "0 7,14 * * *",
+      "running": false,
       "job": {
         "type": "runjs",
         "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js"
