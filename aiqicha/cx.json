@@ -4,7 +4,7 @@
     "mitmhost": ["aiqicha.baidu.com"],
     "rewrite": [{
             "match": "https://aiqicha.baidu.com/zxcenter",
-            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ifaqc.js",
+            "target": "https://raw.githubusercontent.com/sonce/woolscripts/main/aiqicha/ql_aiqicha.js",
             "enable": true
         }
     ]
