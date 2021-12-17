@@ -65,6 +65,7 @@ const defaultTx = 5;
         queryTask.push(queryCash(account))
     })
     var totalMessage = ""
+    var needNotify = false;
     //58秒查询资金情况
     var queryMessage = ''
     var queryPromise = Promise.all(queryTask).then(results => {
@@ -105,7 +106,7 @@ const defaultTx = 5;
 
                 } else {
                     account.isSucess = result;
-
+                    needNotify = account.isSucess;
                     resultMessage = `${resultMessage} \n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`
                     console.log(`\n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`)
                 }
@@ -123,7 +124,6 @@ const defaultTx = 5;
         var endTime = new Date()
         if (endTime.getHours() >= 20) {
             var failAccounts = accounts.filter(x => !x.hadTx && !x.isSucess);
-            debugger
             if (failAccounts.length > 0) {
                 console.log("\n 对今天没有提现的账号随机提现！")
                 totalMessage = totalMessage + "\n随即提现："
@@ -154,8 +154,10 @@ const defaultTx = 5;
             } else
                 notify.sendNotify(`电视家提现资格抢购`, totalMessage);
         }
-        else
+        else if (needNotify)
             notify.sendNotify(`电视家提现资格抢购`, totalMessage);
+        else
+            console.log('\n 不发送通知！')
     })
 
 

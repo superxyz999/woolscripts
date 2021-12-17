@@ -82,7 +82,7 @@ async function getaskList () {
       }
     });
   }
-  taskList = shuffle(taskList);
+  // taskList = shuffle(taskList);
   console.log(`共 ${alltaskList.length}任务 已完成 ${ytaskList.length} 任务 可做 ${taskList.length}任务 ${claimList.length}任务可领取奖励`)
 }
 

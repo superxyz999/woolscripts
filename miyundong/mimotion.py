@@ -103,12 +103,19 @@ def main(_user, _passwd, _maxstep=16000):
     f.seek(0)
     contents =f.read()
     preStep = 0
+    neednotify=False
     if contents :
         stepInfo = contents.split(',')
         if stepInfo[0] == date:
             _maxstep=int(stepInfo[1])
             preStep=int(stepInfo[2])
             print(f"当前步数：{preStep}")
+            if _maxstep <= preStep :
+                neednotify=True
+        else:
+            neednotify=True
+    else:
+        neednotify=True
     
     if _maxstep <= preStep :
         print(f"已经达到步数：{_maxstep}")
@@ -166,7 +173,8 @@ def main(_user, _passwd, _maxstep=16000):
     finishinfo = f"今天目标步数：{_maxstep}, 刚走了：{addStep}，当前步数：（{_step}）" + response['message']
     result = f"{result}{finishinfo}"
     print(finishinfo)
-    return result
+    if neednotify:
+        return result
 
  
 # 获取时间戳
@@ -373,21 +381,26 @@ if __name__ ==  "__main__":
                 # print(f"已设置为随机步数（{step_array[0]}-{step_array[1]}）")
             elif str(step) == '':
                 step = random.randint(15000,25000)
-            push += main(user_list[line], passwd_list[line], step) + '\n'
-        if Pm == 'wx':
-            push_wx(_sckey, push)
-        elif Pm == 'nwx':
-            push_server(_sckey, push)
-        elif Pm == 'tg':
-            push_tg(sl[0], sl[1], push)
-        elif Pm == 'qwx':
-            if len(sl) == 4:
-                wxpush(push, sl[0], sl[1], sl[2], int(sl[3]))
-            else:
-                wxpush(push, sl[0], sl[1], sl[2])
-        elif Pm == 'pp':
-            push_pushplus(token, push)
-        elif Pm == 'off':
-            pass
+            msg = main(user_list[line], passwd_list[line], step)
+            if msg:
+                push += msg + '\n'
+        if len(push)!=0:
+            if Pm == 'wx':
+                push_wx(_sckey, push)
+            elif Pm == 'nwx':
+                push_server(_sckey, push)
+            elif Pm == 'tg':
+                push_tg(sl[0], sl[1], push)
+            elif Pm == 'qwx':
+                if len(sl) == 4:
+                    wxpush(push, sl[0], sl[1], sl[2], int(sl[3]))
+                else:
+                    wxpush(push, sl[0], sl[1], sl[2])
+            elif Pm == 'pp':
+                push_pushplus(token, push)
+            elif Pm == 'off':
+                pass
+        else:
+            print('\n不推送消息!')
     else:
         print('用户名和密码数量不对')
