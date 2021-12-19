@@ -12,167 +12,179 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 /**
  * 提现类型：0：普通，1：随机
  */
-const txType = 1;
+const txType = 0;
 
 let defaultHeader = {
     'systemSdkVersion': 29,
     'User-Agent': 'android%2Fclient',
     'hwBrand': 'HONOR',
-    'appVerName': '2.9.3-beta3',
+    'appVerName': '2.9.9',
     'hwDevice': 'HWBKL',
     'language': 'zh_CN_%23Hans',
-    'uuid': '25cfdedc03562423e177d610d601f7bc',
+    'uuid': '9facfaedc85fd638fc55f4f7c7d278f5',
     'platform': '10',
     'hwModel': 'BKL-AL20',
     'generation': 'com.dianshijia.tvlive',
     'hwHardware': 'kirin970',
     'Connection': 'close',
     'routermac': '047970789cdf',
-    'appVerCode': '353',
+    'appVerCode': '373',
     'areaCode': '440300',
     'cuuid': '325c08175f8e5b2419d2e415b812a516',
     'appid': '0990028e54b2329f2dfb4e5aeea6d625',
     'marketChannelName': 'default_oy',
-    'Host': 'pay.gaoqingdianshi.com',
     'Accept-Encoding': 'gzip'
 };
 
+// const TxMap = {
+//     5: "tx00031",
+//     10: "tx000041",
+//     20: "tx0030",
+//     25: "tx00025",
+//     30: "tx00005",
+//     50: "tx00006",
+//     100: "tx0100"
+// };
+
 const TxMap = {
-    5: "tx00031",
-    10: "tx000041",
-    20: "tx0030",
-    25: "tx00025",
-    30: "tx00005",
-    50: "tx00006",
-    100: "tx0100"
-};
+    1: "zz2021@g4KeyhtG5y",
+    2: "zz2021@degfJfE68Q",
+    5: "zz2021@5yuan",
+    10: "zz2021@LzxgAhyrSH",
+    20: "zz2021@uq7YaGROgQ",
+    25: "zz2021@6TfTYXIiV8",
+    30: "zz2021@UNjPv3RriR",
+    50: "zz2021@0R9vPaxz2u",
+    100: "zz2021@oLBxKAwvNe"
+}
 
-const defaultTx = 5;
-// var main = async function bingfatixian() {
-//     await Promise.all(accounts.map((account) => {
-//         return tixian(account)
-//     }));
-// }
+const defaultTx = 1;
+const apiUrl = 'http://api.gaoqingdianshi.com/api/cash/v1/zz/withdrawal';
+const oldApiUrl = 'http://pay.gaoqingdianshi.com/api/v2/cash/withdrawal';
+    // var main = async function bingfatixian() {
+    //     await Promise.all(accounts.map((account) => {
+    //         return tixian(account)
+    //     }));
+    // }
 
-(function main() {
-    // await new Promise((resolve) => { console.log(42); });
-    const accounts = dsjCookie.datas.filter(x => x.val !== '');
-    console.log(`一共${accounts.length}个账号！`);
+    (function main() {
+        // await new Promise((resolve) => { console.log(42); });
+        const accounts = dsjCookie.datas.filter(x => x.val !== '');
+        console.log(`一共${accounts.length}个账号！`);
 
-    var queryTask = []
-    accounts.forEach(account => {
-        account.txCode = TxMap[defaultTx]
-        queryTask.push(queryCash(account))
-    })
-    var totalMessage = ""
-    var needNotify = false;
-    //58秒查询资金情况
-    var queryMessage = ''
-    var queryPromise = Promise.all(queryTask).then(results => {
-        queryMessage = results.join('\n')
-        console.log(queryMessage)
-        return Promise.resolve();
-    })
-
-    var txPromise = new Promise((resolve) => {
-        //58秒运行，59秒开始进入抢购，每次抢购间隔200毫秒
-        setTimeout(() => {
-            resolve()
-        }, 1000);
-    }).then(() => {
-        console.log(`开始进入抢，时间：${new Date()}`)
-        var allTasks = []
+        var queryTask = []
         accounts.forEach(account => {
-            allTasks.push(tixian(account))
+            account.txCode = TxMap[defaultTx]
+            queryTask.push(queryCash(account))
         })
-        return Promise.all(allTasks).then((results) => {
-            var endTime = new Date()
-            endTime.getHours();
-            console.log(`结束抢，时间：${new Date()}`)
-            var resultMessage = '\n抢提现的结果:'
-            console.log(`\n抢提现的结果:`)
-            for (let index = 0; index < accounts.length; index++) {
-                const account = accounts[index];
-                const result = results[index];
-                if (account.disable) {
-                    if (account.notxck && account.candrawalQuota > 0) {
-                        resultMessage = `${resultMessage} \n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`
-                        console.log(`\n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`)
-                    }
-                    else {
-                        resultMessage = `${resultMessage} \n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`
-                        console.log(`\n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`)
-                    }
+        var totalMessage = ""
+        var needNotify = false;
+        //58秒查询资金情况
+        var queryMessage = ''
+        var queryPromise = Promise.all(queryTask).then(results => {
+            queryMessage = results.join('\n')
+            console.log(queryMessage)
+            return Promise.resolve();
+        })
 
-                } else {
-                    account.isSucess = result;
-                    needNotify = account.isSucess;
-                    resultMessage = `${resultMessage} \n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`
-                    console.log(`\n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`)
+        var txPromise = new Promise((resolve) => {
+            //58秒运行，59秒开始进入抢购，每次抢购间隔200毫秒
+            setTimeout(() => {
+                resolve()
+            }, 1000);
+        }).then(() => {
+            console.log(`开始进入抢，时间：${new Date()}`)
+            var allTasks = []
+            accounts.forEach(account => {
+                allTasks.push(Tixian(account))
+            })
+            return Promise.all(allTasks).then((results) => {
+                var endTime = new Date()
+                endTime.getHours();
+                console.log(`结束抢，时间：${new Date()}`)
+                var resultMessage = '\n抢提现的结果:'
+                console.log(`\n抢提现的结果:`)
+                for (let index = 0; index < accounts.length; index++) {
+                    const account = accounts[index];
+                    const result = results[index];
+                    if (account.disable) {
+                        if (account.notxck && account.candrawalQuota > 0) {
+                            resultMessage = `${resultMessage} \n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`
+                            console.log(`\n${account.desc}可提现￥${account.candrawalQuota},但没有设置提现CK！`)
+                        }
+                        else {
+                            resultMessage = `${resultMessage} \n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`
+                            console.log(`\n${account.desc}没有进行提现，${account.hadTx ? "今天已经提现了" : "可能额度不够哦。"}`)
+                        }
+
+                    } else {
+                        account.isSucess = result;
+                        needNotify = account.isSucess;
+                        resultMessage = `${resultMessage} \n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`
+                        console.log(`\n${account.desc}提现￥${account.txAmount}${result ? "成功" : "失败"}`)
+                    }
                 }
-            }
 
-            if ($.isNode()) {
-                totalMessage = queryMessage + resultMessage;
-            }
-            return Promise.resolve()
+                if ($.isNode()) {
+                    totalMessage = queryMessage + resultMessage;
+                }
+                return Promise.resolve()
+            })
         })
-    })
 
-    Promise.all([queryPromise, txPromise]).then(() => {
-        //最后一波也没抢到，则随机提现
-        var endTime = new Date()
-        if (endTime.getHours() >= 20) {
-            var failAccounts = accounts.filter(x => !x.hadTx && !x.isSucess);
-            if (failAccounts.length > 0) {
-                console.log("\n 对今天没有提现的账号随机提现！")
-                totalMessage = totalMessage + "\n随即提现："
-                var rantTxPromise = []
-                var rantTxAccounts = []
-                failAccounts.forEach(account => {
-                    if (typeof account.randTx === 'string' && account.randTx !== "") {
-                        rantTxAccounts.push(account)
-                        rantTxPromise.push(tixian(account, true))
-                    }
-                    else {
-                        totalMessage = totalMessage + `\n 账号${account.desc}随机提现没有设置！`
-                        console.log(`\n 账号${account.desc}随机提现没有设置！`)
-                    }
-                });
-                Promise.all(rantTxPromise).then(results => {
-                    for (let index = 0; index < rantTxAccounts.length; index++) {
-                        const failAccount = rantTxAccounts[index];
-                        const rantReulst = results[index]
-                        if (rantReulst)
-                            totalMessage = `\n账号${failAccount.desc}随机提现￥${failAccount.txAmount}`
-                        else
-                            totalMessage = `\n账号${failAccount.desc}随机提现失败`
-                    }
+        Promise.all([queryPromise, txPromise]).then(() => {
+            //最后一波也没抢到，则随机提现
+            var endTime = new Date()
+            if (endTime.getHours() >= 20) {
+                var failAccounts = accounts.filter(x => !x.hadTx && !x.isSucess);
+                if (failAccounts.length > 0) {
+                    console.log("\n 对今天没有提现的账号随机提现！")
+                    totalMessage = totalMessage + "\n随即提现："
+                    var rantTxPromise = []
+                    var rantTxAccounts = []
+                    failAccounts.forEach(account => {
+                        if (typeof account.randTx === 'string' && account.randTx !== "") {
+                            rantTxAccounts.push(account)
+                            rantTxPromise.push(Tixian(account, true))
+                        }
+                        else {
+                            totalMessage = totalMessage + `\n 账号${account.desc}随机提现没有设置！`
+                            console.log(`\n 账号${account.desc}随机提现没有设置！`)
+                        }
+                    });
+                    Promise.all(rantTxPromise).then(results => {
+                        for (let index = 0; index < rantTxAccounts.length; index++) {
+                            const failAccount = rantTxAccounts[index];
+                            const rantReulst = results[index]
+                            if (rantReulst)
+                                totalMessage = `\n账号${failAccount.desc}随机提现￥${failAccount.txAmount}`
+                            else
+                                totalMessage = `\n账号${failAccount.desc}随机提现失败`
+                        }
+                        notify.sendNotify(`电视家提现资格抢购`, totalMessage);
+
+                    })
+                } else
                     notify.sendNotify(`电视家提现资格抢购`, totalMessage);
-
-                })
-            } else
+            }
+            else if (needNotify)
                 notify.sendNotify(`电视家提现资格抢购`, totalMessage);
-        }
-        else if (needNotify)
-            notify.sendNotify(`电视家提现资格抢购`, totalMessage);
-        else
-            console.log('\n 不发送通知！')
-    })
+            else
+                console.log('\n 不发送通知！')
+        })
 
 
 
-    // await Promise.all(accounts.map((account) => {
-    //     // return tixian(account)
-    //     return new Promise(resolve => { tixian(account) })
-    // }));
-})();
+        // await Promise.all(accounts.map((account) => {
+        //     // return tixian(account)
+        //     return new Promise(resolve => { tixian(account) })
+        // }));
+    })();
 
-async function tixian(account, isrant = false) {
+async function Tixian(account, isrant = false) {
     if (!isrant && typeof account.disable === 'boolean' && account.disable) {
         return false
     }
-
     /**
      * @type string[]
      */
@@ -187,9 +199,16 @@ async function tixian(account, isrant = false) {
         }
     }
     if (qiangouparas.length > 0) {
-
         account.count = qiangouparas.length
-        const headers = getHeader(account)
+        const headers1 = getHeader(account)
+        var headers;
+        var requestAPI = apiUrl;
+        if (isrant) {
+            requestAPI = oldApiUrl
+            headers = { ...headers1, ...{ 'Host': 'pay.gaoqingdianshi.com' } }
+        }
+        else
+            headers = { ...headers1, ...{ 'Host': 'api.gaoqingdianshi.com' } }
         var isSucess = false
         var currentIndex = 0
         let promise = new Promise((resolve, reject) => {
@@ -200,7 +219,7 @@ async function tixian(account, isrant = false) {
                 if (currentIndex + 1 <= account.count) {
                     const para = qiangouparas[currentIndex]
                     currentIndex++
-                    const url = `http://pay.gaoqingdianshi.com/api/v2/cash/withdrawal?${para}`
+                    const url = `${requestAPI}?${para}`
                     var result = await axios.get(url, { headers })
                     if (result.data.errCode == 0) {
                         account.txAmount = result.data.data.price / 100
@@ -233,7 +252,7 @@ async function tixian(account, isrant = false) {
  * @returns void
  */
 async function queryCash(account) {
-    const headers = getHeader(account)
+    const headers = { ...getHeader(account), ...{ 'Host': 'pay.gaoqingdianshi.com' } }
     const url = `http://pay.gaoqingdianshi.com/api/cash/info`
     var result = await axios.get(url, { headers })
     var resultMessage = '';
@@ -253,11 +272,11 @@ async function queryCash(account) {
         }
         else {
             //额度，金币未达到要求5元
-            if (withdrawalQuota < 5) {
+            if (withdrawalQuota < defaultTx) {
                 account.disable = true
             }
             else {
-                var calResult = calcTXCode(account, withdrawalQuota);
+                var calResult = calcTXCode(account, amount);
 
                 account.txCode = calResult.txStepCode
                 noSettingTX = calResult.warningUnConfigStep

@@ -34,3 +34,21 @@ http://api.gaoqingdianshi.com/api/* url script-request-header https://cdn.jsdeli
     "tx00005": "code=tx00005&rs=xxxxxx&sign=xxxxxxx",
     "tx00006": "code=tx00006&rs=xxxxxx&sign=xxxxxxx"
 }
+
+
+    "zz2021@g4KeyhtG5y": [
+    ],
+    "zz2021@degfJfE68Q": [
+    ],
+    "zz2021@5yuan": [
+    ],
+    "zz2021@LzxgAhyrSH": [
+    ],
+    "zz2021@uq7YaGROgQ": [
+    ],
+    "zz2021@6TfTYXIiV8": [
+    ],
+    "zz2021@UNjPv3RriR": [
+    ],
+    "zz2021@0R9vPaxz2u": [
+    ],
