@@ -40,6 +40,7 @@ let jszhd = $.isNode() ? (process.env.jszhd ? process.env.jszhd : "") : ($.getda
 let jszhds = ""
 const logs = 0;
 var timestamp = (new Date()).valueOf();
+
 !(async () => {
   if (typeof $request !== "undefined") {
     await jszck()

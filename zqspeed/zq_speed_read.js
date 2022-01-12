@@ -1,17 +1,14 @@
 
 /*
-shaolin-kongfu
+Zack
 
 软件名称：中青看点极速版
-
-
-
 
 【MITM】
 user.youth.cn
 【rewrite】
 文章
-https://user.youth.cn/v1/article/detail.json 重写目标 https://raw.githubusercontent.com/shaolin-kongfu/js_scripts/main/zq/zq_speed_read.js
+https://user.youth.cn/v1/article/detail.json 重写目标 zq_speed_read.js
 
 
 */
