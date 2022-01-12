@@ -315,10 +315,14 @@ async function readArticle(num) {
     while (articleList.length < num) {
         var type = articleType()
         // await task(`get`, `https://api.st615.com/v2/article/list?cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8`, headerss), articleData = DATA
-        await task(`get`, `https://api.st615.com/v1/article/list?type=2&cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8&token=${jztoken}`, headerss), articleData = DATA
-        if (articleData.code == 0) {
-            articleList = articleList.concat(articleData.data.list)
-            await $.wait(3000)
+        try{
+            await task(`get`, `https://api.st615.com/v1/article/list?type=2&cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8&token=${jztoken}`, headerss), articleData = DATA
+            if (articleData.code == 0) {
+                articleList = articleList.concat(articleData.data.list)
+                await $.wait(3000)
+            }
+        }
+        catch{
         }
     }
 
@@ -410,10 +414,10 @@ function randomString(e) {
     return n
 }
 
-function RT(X, Y) {
-    do rt = Math.floor(Math.random() * Y);
-    while (rt < X)
-    return rt;
+function RT(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function MD5_Encrypt(a) {
