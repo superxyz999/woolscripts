@@ -1,74 +1,23 @@
-/*
-变量为 jzreadtoken 多账号用@隔开
-export jzreadtoken='token'@'token'
-自行抓包替换 
-视频数量为 jzvideonum 默认是0  为了不那么快黑，我建议你设置0
-是否随机视频数量，jzvideorandom，如果随机则jzvideonum变量为随机最大值，0为最小值
-文章数量为 jzarticlenum 默认是3 当然你可以设置更大
-分享数量 jzsharenum，默认为3，用于提现
-广告数量 jzadnum，默认全部执行
+const $ = new Env('九章1.11版 自动提0.3');
 
-读文章的规则是每天第一次运行会读满任务要求的20篇，后面就再运行就按着你设置的那个数值来。
-如果你要完成读满60分钟的任务，自己改定时和读取文章数量，去配合着完成。
+jztoken = $.isNode() ? (process.env.jztoken ? process.env.jztoken : "") : ($.getdata('jztoken') ? $.getdata('jztoken') : "")
 
-配置文件这样写进去
-export jzreadtoken='token'@'token'
-export jzvideonum=0
-export jzarticlenum=3
-export jzsharenum=3
+/**
+ * 是否一次执行完所有任务.如果不是，则需要一天执行10次。* 9-19 * * *
+ */
+runOnce = false;
 
-只验证过青龙，其他自测自改。
----------
-我什么都不懂，不要问我问题，我瞎写的。没账号测试，你们自己试试看吧。
-*/
-
-// [task_local]
-// 30 8 * * * tomjztt.js, tag=tom九章1.15版-热心市民修🚗版,  enabled=true
-
-const { exit } = require("process");
-
-const $ = new Env('tom九章1.15版-热心市民修🚗版');
-
-
-
-let jzreadTokenArr = [];
-let videoNum = $.isNode() ? (process.env.jzvideonum ? process.env.jzvideonum : 0) : ($.getdata('jzvideonum') ? $.getdata('jzvideonum') : 0)
-let videoRandom = $.isNode() ? (process.env.jzvideorandom ? process.env.jzvideorandom : false) : ($.getdata('jzvideorandom') ? $.getdata('jzvideorandom') : false)
-let articleNum = $.isNode() ? (process.env.jzarticlenum ? process.env.jzarticlenum : 3) : ($.getdata('jzarticlenum') ? $.getdata('jzarticlenum') : 3)
-let shareNum = $.isNode() ? (process.env.jzsharenum ? process.env.jzsharenum : 3) : ($.getdata('jzsharenum') ? $.getdata('jzsharenum') : 3)
-let adNum = $.isNode() ? (process.env.jzadnum ? process.env.jzadnum : Number.MAX_VALUE) : ($.getdata('jzadnum') ? $.getdata('jzadnum') : Number.MAX_VALUE)
-
-//调试日志开关
-var log = 0;
-
-
-TOM = `https://tom666.coding.net/p/tom/d/tom/git/raw/master/csurl.json`
 let signi = 'X2dk9sdnwoifPv7L';
 let dlurl = 'https://api.st615.com/v2/user/info?token=';
 
 !(async () => {
-    if (process.env.jzreadtoken && process.env.jzreadtoken.indexOf('@') > -1) {
-        jzreadTokenArr = process.env.jzreadtoken.split('@');
-        console.log(`您选择的是用"@"隔开\n`)
+    if (jztoken == '') {
+        console.log(`未设置TOKEN`)
+        $.done()
     } else {
-        jzreadTokenArr = [process.env.jzreadtoken]
-    };
-    console.log(`共${jzreadTokenArr.length}个cookie`)
-
-    for (let k = 0; k < jzreadTokenArr.length; k++) {
-        jztoken = jzreadTokenArr[k];
-        if (jztoken == '') {
-            console.log(`亲 请勿用作违法用途哦 此js已删减部分函数 仅供学习交流噢`)
-            $.msg(`亲 请勿用作违法用途哦 此js已删减部分函数 仅供学习交流噢`)
-            $.done()
-        } else {
-            await all()
-        }
+        all()
     }
 }
-
-
-
 )()
 
 async function ckck() {
@@ -79,7 +28,7 @@ async function ckck() {
         "Host": "api.st615.com",
         "timestamp": `${ts}`,
         "noncestr": `${guid}`,
-        "User-Agent": "ChapterNine/1.2.8 (com.ass.jiuzhang; build:1137; iOS 14.3.0) Alamofire/5.4.4",
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; BKL-AL20 Build/HUAWEIBKL-AL20; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.106 Mobile Safari/537.36",
         "sign": `${sign}`,
         "token": `${jztoken}`
     }
@@ -88,287 +37,123 @@ async function ckck() {
 
 async function all() {
     await ckck()
-
     await task(`get`, dlurl + jztoken, headerss)
     if (DATA.code == 0) {
-        let myMoney = DATA.data.money;
         console.log(`--------账号:${DATA.data.name}--------\n\n现金余额：${DATA.data.money}元\n金币余额：${DATA.data.integral}个\n`);
-        await task(`get`, 'https://api.st615.com/v2/user/task?token=', headerss), taskList = DATA;
-        console.log(`已经连续签到：${taskList.data.series}天\n\n`);
-        await getBenefit();
-
-        var daily_task;
-        var hadReadArticle = false;
-        for (var j = 0; j < taskList.data.daily_task.length; j++) {
-            daily_task = taskList.data.daily_task[j];
-
-            if (daily_task.name == "签到奖励" && daily_task.is_finish != 1) {
-                //签到奖励任务没有完成，就执行这块签到
-                await ckck()
-                await task(`post`, 'https://api.st615.com/v2/task/clock', headerss, `is_double=0&token=${jztoken}`), data = DATA, console.log(data.data);
-                await $.wait(3000)
-                await ckck()
-                await task(`post`, 'https://api.st615.com/v2/task/continue', headerss, `token=${jztoken}`), data = DATA, console.log(data.data);
-                await $.wait(3000)
-                await ckck()
-                await task(`post`, 'https://api.st615.com/v2/sign/sign', headerss, `token=${jztoken}`), data = DATA, console.log(data.data);
-                await $.wait(3000)
-                await ckck()
-                await task(`post`, 'https://api.st615.com/v2/task/ads', headerss, `id=94&token=${jztoken}`), data = DATA, console.log(data.data);
-                await $.wait(3000)
-            }
-            else if ((daily_task.id == 13 || daily_task.id == 15 || daily_task.id == 16) && articleNum > 0) {
-                console.log(`${daily_task.name}任务${daily_task.is_finish ? '已经完成' : '未完成'}!这边你设置了读取${articleNum}篇`);
-                if (!hadReadArticle) {
-                    await readArticle(articleNum);
-                    hadReadArticle = true;
-                }
-            }
-            // else if ((daily_task.id == 15||daily_task.id==16) && daily_task.is_finish != 1 && articleNum > 0) {
-            //     //文章阅读60分钟
-            //     console.log(`今日文章阅读60分钟没有完成，这边你设置了读取${articleNum}篇`);
-            //     await readArticle(articleNum, articleType());
-            // }
-            // else if (daily_task.id == 13 && daily_task.is_finish != 1 && articleNum > 0) {
-            //文章阅读的没有执行完成，就执行这块 一次性20篇，完成当天所需文章阅读数量
-            // console.log(`今日读取文章20篇任务没有完成，现在帮你读他个20篇应付一下`);
-            // await readArticle(20, articleType());
-            // }
-
-        }
-
-        //看视频
-        if (videoNum > 0) {
-            console.log(`你设置了你要看视频,${videoRandom ? '随机看0-' + videoNum + '个' : '看' + videoNum + '个'}`)
-            if (videoRandom) {
-                videoNum = RT(0, videoNum);
-                console.log(`此次随机的结果为看${videoNum}个视频!`);
-            }
-            if (videoNum > 0)
-                await watchVideo(videoNum, videoType());
-
-        }
-
-        //看任务里面的广告
-        for (let i = 0; i < taskList.data.ads_task.length; i++) {
-            if (taskList.data.ads_task[i].is_finish == 0) {
-                console.log(`看广告ing...`)
-                await ckck()
-                id = taskList.data.ads_task[i].id
-                await task(`post`, `https://api.st615.com/v2/task/ads`, headerss, `id=${id}&token=${jztoken}`), datas = DATA
-                if (datas.code == 0) {
-                    console.log(JSON.stringify(datas));
-                }
-                await $.wait(RT(30000, 36000))
-                if (i + 1 >= adNum)
-                    break;
-            }
-        }
-
-
-        if (myMoney > 0.3) {
-            //提现模块,要钱包大于0.3才会去执行
+        //await ssp()
+        await task(`get`, 'https://api.st615.com/v2/user/task?token=', headerss)
+        data = DATA;
+        //console.log(JSON.stringify(data.data));
+        var qiandaoTask = data.data.daily_task.find(x => x.id == 6);
+        if (qiandaoTask.is_finish != 1) {
+            await $.wait(RT(10000, 36000))
             await ckck()
-            await task(`get`, `https://api.st615.com/v2/log/balance?type=2&page=1&limit=20`, headerss), txdata = DATA
-            if (txdata.code == 0) {
-                function getCurrentDate() {
-                    var date = new Date();
-                    var seperator1 = "-";
-                    var seperator2 = ":";
-                    var month = date.getMonth() + 1;
-                    var strDate = date.getDate();
-                    if (month >= 1 && month <= 9) {
-                        month = "0" + month;
-                    }
-                    if (strDate >= 0 && strDate <= 9) {
-                        strDate = "0" + strDate;
-                    }
-                    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
-                        " " + date.getHours() + seperator2 + date.getMinutes() +
-                        seperator2 + date.getSeconds();
-                    return currentdate;
-                }
-                firstTxLog = txdata.data.list[0];
-                //循环查看通宝列表
-                txDate = (firstTxLog.add_time).split(` `)[0];
-                nowDate = getCurrentDate().split(` `)[0];
-                if (firstTxLog.use_type == 1 && txDate != nowDate) {
-                    for (let i = 0; i < shareNum; i++) {
-                        //做分享是为了更好的提现！
-                        await ckck()
-                        console.log(`为了提💰，分享第${i}次...`);
-                        await task(`get`, `https://api.st615.com/v2/article/share`, headerss, `device=iPhone%207&id=&os=15.2&source=cash&token=${jztoken}`)
-                    }
-                    await ckck()
-                    await task(`get`, `https://api.st615.com/v2/cash/withdraw-new`, headerss, `token=${jztoken}&type=1&money=0.3`), txResult = DATA
-                    if (txResult.code == 0) {
-                        console.log(`提0.3元 : 成功`);
-                    }
-                } else if (txdata.data.list[i].use_type == 1 && txDate == nowDate) {
-                    console.log(`${txDate}今日已提现`);
-                }
-            }
-        }
-        await getBenefit();
-    }
-
-    $.done()
-}
-
-//收益查询接口
-async function getBenefit() {
-    await ckck()
-    await task(`get`, `https://api.st615.com/v2/index/benefit?token=${jztoken}`, headerss), data = DATA
-    await $.wait(3000)
-    if (data.code != 0) {
-        console.log(JSON.stringify(data));
-    }
-}
-
-
-
-//调试用LOG 
-function showLog(data) {
-    if (log) {
-        console.log(JSON.stringify(data));
-    }
-}
-
-//文章类别
-function articleType() {
-    var CIdArray = [{
-        "id": -1, "name": "关注"
-    }, {
-        "id": 0, "name": "推荐"
-    }, {
-        "id": -2, "name": "热榜"
-    }, {
-        "id": "100", "name": "中国梦"
-    }, {
-        "id": "11", "name": "大健康"
-    }, {
-        "id": "57", "name": "美文能量"
-    }, {
-        "id": "101", "name": "梵音佛心"
-    }, {
-        "id": "3", "name": "军事"
-    }, {
-        "id": "6", "name": "全民抗疫"
-    }, {
-        "id": "8", "name": "汽车"
-    }, {
-        "id": "9", "name": "数码"
-    }, {
-        "id": "10", "name": "体育"
-    }, {
-        "id": "12", "name": "育儿"
-    }, {
-        "id": "13", "name": "情感"
-    }, {
-        "id": "14", "name": "美食"
-    }, {
-        "id": "15", "name": "萌宠"
-    }, {
-        "id": "16", "name": "时尚"
-    }, {
-        "id": "18", "name": "动漫游戏"
-    }, {
-        "id": "19", "name": "励志"
-    }, {
-        "id": "20", "name": "养生"
-    }, {
-        "id": "21", "name": "生活"
-    }, {
-        "id": "22", "name": "旅行"
-    }, {
-        "id": "23", "name": "星座"
-    }, {
-        "id": "24", "name": "历史"
-    }, {
-        "id": "25", "name": "阅读"
-    }, {
-        "id": "26", "name": "故事"
-    }, {
-        "id": "27", "name": "收藏"
-    }, {
-        "id": "29", "name": "房产"
-    }, {
-        "id": "30", "name": "家居"
-    }, {
-        "id": "31", "name": "教育"
-    }, {
-        "id": "32", "name": "公益"
-    }, {
-        "id": "33", "name": "新时代"
-    }, {
-        "id": "34", "name": "党媒推荐"
-    }];
-
-    return CIdArray[Math.floor((Math.random() * CIdArray.length))];
-}
-
-
-//读取文章
-async function readArticle(num) {
-    await ckck()
-    var articleList = [];
-    while (articleList.length < num) {
-        var type = articleType()
-        // await task(`get`, `https://api.st615.com/v2/article/list?cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8`, headerss), articleData = DATA
-        await task(`get`, `https://api.st615.com/v1/article/list?type=2&cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8&token=${jztoken}`, headerss), articleData = DATA
-        if (articleData.code == 0) {
-            articleList = articleList.concat(articleData.data.list)
+            await task(`post`, 'https://api.st615.com/v1/task/clock', headerss, `is_double=0&token=${jztoken}`)
+            thedata = DATA
+            console.log(thedata.data);
+            await $.wait(3000)
+            await ckck()
+            await task(`post`, 'https://api.st615.com/v1/task/continue', headerss, `token=${jztoken}`)
+            thedata = DATA
+            console.log(thedata.data);
+            await $.wait(3000)
+            await ckck()
+            await task(`post`, 'https://api.st615.com/v1/sign/sign', headerss, `token=${jztoken}`)
+            thedata = DATA
+            console.log(thedata.data);
+            await $.wait(3000)
+            await ckck()
+            await task(`post`, 'https://api.st615.com/v1/task/ads', headerss, `id=94&token=${jztoken}`)
+            thedata = DATA
+            console.log(thedata.data);
             await $.wait(3000)
         }
-    }
+        var readTask = data.data.daily_task.find(x => x.id == 13);
 
-    for (let i = 0; i < num; i++) {
-        await ckck()
-        spids = articleList[i].id
-        console.log(`开始读${type.name}类的《${articleList[i].title}》...预计花30秒`);
-        //先等待30秒之后
-        await $.wait(RT(30000, 36000))
-        //再提交阅读完成信号
-        await task(`post`, `https://api.st615.com/v2/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
-        // await task(`post`, `https://api.st615.com/v1/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
-        if (data.code == 0) {
-            console.log(`${data.msg},获得金币${data.data.coin}`);
-        } else {
-            console.log(JSON.stringify(data));
-        }
-    }
-}
-
-//视频类别
-function videoType() {
-    var CIdArray = [{ "id": -1, "name": "关注" }, { "id": 0, "name": "推荐" }, { "id": -3, "name": "小视频" }, { "id": "35", "name": "影视" }, { "id": "36", "name": "游戏" }, { "id": "37", "name": "音乐" }, { "id": "38", "name": "VLOG" }, { "id": "39", "name": "美食" }, { "id": "40", "name": "农人" }, { "id": "41", "name": "搞笑" }, { "id": "42", "name": "旅游" }, { "id": "43", "name": "综艺" }, { "id": "44", "name": "宠物" }, { "id": "45", "name": "娱乐" }, { "id": "46", "name": "科技" }, { "id": "47", "name": "军事" }, { "id": "48", "name": "懂车帝" }, { "id": "49", "name": "体育" }, { "id": "50", "name": "NBA" }, { "id": "51", "name": "文化" }, { "id": "52", "name": "手工" }, { "id": "53", "name": "经济" }];
-    return CIdArray[Math.floor((Math.random() * CIdArray.length))];
-}
-
-//看视频
-async function watchVideo(num, type) {
-
-    await ckck()
-    await task(`get`, `https://api.st615.com/v2/article/list?type=2&cid=${type.id}&page=1&terminal=Apple&version=1.2.8`, headerss), videoData = DATA
-    await $.wait(3000)
-    if (videoData.code == 0) {
-        for (let i = 0; i < num; i++) {
+        if (readTask.is_finish != 1) {
             await ckck()
-            spids = videoData.data.list[i].id
-            console.log(`开始看${type.name}类的《${videoData.data.list[i].title}》...预计花31秒`);
-            //先等待31秒之后
-            await $.wait(RT(31000, 33000))
-            //再提交阅读完成信号
-            await task(`post`, `https://api.st615.com/v2/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
+            await task(`get`, `https://api.st615.com/v1/article/list?type=2&cid=0&page=1&terminal=Apple&version=1.2.8&token=${jztoken}`, headerss)
+            spdata = DATA
+            //console.log(JSON.stringify(data.data));
+            await $.wait(3000)
             if (data.code == 0) {
-                console.log(`${data.msg},获得金币${data.data.coin}`);
-            } else {
-                console.log(JSON.stringify(data));
+                var readNum = 20
+                if (!runOnce)
+                    readNum = 2
+                for (let i = 0; i < readNum; i++) {
+                    await ckck()
+                    spids = spdata.data.list[i].id
+                    //console.log(spids);
+                    await task(`post`, `https://api.st615.com/v1/article/finish`, headerss, `id=${spids}&token=${jztoken}`)
+                    readResult = DATA
+                    if (data.code == 0) {
+                        console.log(JSON.stringify(readResult));
+                    }
+
+                    await $.wait(RT(30000, 36000))
+                }
             }
         }
-    }
-}
 
+        for (let i = 0; i < data.data.ads_task.length; i++) {
+            if (data.data.ads_task[i].is_finish != 0) {
+                await ckck()
+                id = data.data.ads_task[i].id
+                await task(`post`, `https://api.st615.com/v1/task/ads`, headerss, `id=${id}&token=${jztoken}`)
+                readdata = DATA
+                if (readdata.code == 0) {
+                    console.log(JSON.stringify(readdata));
+                }
+
+                await $.wait(RT(30000, 36000))
+                if (!runOnce)
+                    break;
+            }
+
+        }
+    }
+    await ckck()
+    await task(`get`, `https://api.st615.com/v2/cash/page-list?token=${jztoken}&page=1&limit=10`, headerss)
+    txtx = DATA
+    if (txtx.code == 0) {
+        function getCurrentDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+                " " + date.getHours() + seperator2 + date.getMinutes() +
+                seperator2 + date.getSeconds();
+            return currentdate;
+        }
+        sctxsj = (txtx.data.list[0].add_time).split(` `)[0]
+        jtsj = getCurrentDate().split(` `)[0]
+        if (sctxsj != jtsj) {
+            for (let i = 0; i < 3; i++) {
+                await ckck()
+                await task(`post`, `https://api.st615.com/v2/article/share`, headerss, `device=iPhone%207&id=&os=14.3&source=cash&token=${jztoken}`)
+                if (!runOnce)
+                    break;
+            }
+            await ckck()
+            await task(`post`, `https://api.st615.com/v2/cash/withdraw-new`, headerss, `token=${jztoken}&type=1&money=0.3`)
+            txjg = DATA
+            if (txjg.code == 0) {
+                console.log(`提现0.3元 : 成功`);
+            }
+        } else {
+            console.log(`${sctxsj}今日已提现`);
+        }
+    }
+    $.done()
+}
 
 function task(method, taskurl, taskheader, taskbody) {
     return new Promise(async resolve => {
