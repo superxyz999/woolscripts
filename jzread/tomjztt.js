@@ -33,7 +33,7 @@ const $ = new Env('tom九章1.15版-热心市民修🚗版');
 
 let jzreadTokenArr = [];
 let videoNum = $.isNode() ? (process.env.jzvideonum ? process.env.jzvideonum : 0) : ($.getdata('jzvideonum') ? $.getdata('jzvideonum') : 0)
-adNum = Number.parseInt(videoNum)
+videoNum = Number.parseInt(videoNum)
 
 let videoRandom = $.isNode() ? (process.env.jzvideorandom ? process.env.jzvideorandom : 'false') : ($.getdata('jzvideorandom') ? $.getdata('jzvideorandom') : 'false')
 videoRandom = videoRandom == 'true' ? true : false;
