@@ -33,10 +33,19 @@ const $ = new Env('tom九章1.15版-热心市民修🚗版');
 
 let jzreadTokenArr = [];
 let videoNum = $.isNode() ? (process.env.jzvideonum ? process.env.jzvideonum : 0) : ($.getdata('jzvideonum') ? $.getdata('jzvideonum') : 0)
-let videoRandom = $.isNode() ? (process.env.jzvideorandom ? process.env.jzvideorandom : false) : ($.getdata('jzvideorandom') ? $.getdata('jzvideorandom') : false)
+adNum = Number.parseInt(videoNum)
+
+let videoRandom = $.isNode() ? (process.env.jzvideorandom ? process.env.jzvideorandom : 'false') : ($.getdata('jzvideorandom') ? $.getdata('jzvideorandom') : 'false')
+videoRandom = videoRandom == 'true' ? true : false;
+
 let articleNum = $.isNode() ? (process.env.jzarticlenum ? process.env.jzarticlenum : 3) : ($.getdata('jzarticlenum') ? $.getdata('jzarticlenum') : 3)
+articleNum = Number.parseInt(articleNum)
+
 let shareNum = $.isNode() ? (process.env.jzsharenum ? process.env.jzsharenum : 3) : ($.getdata('jzsharenum') ? $.getdata('jzsharenum') : 3)
+shareNum = Number.parseInt(shareNum)
+
 let adNum = $.isNode() ? (process.env.jzadnum ? process.env.jzadnum : Number.MAX_VALUE) : ($.getdata('jzadnum') ? $.getdata('jzadnum') : Number.MAX_VALUE)
+adNum = Number.parseInt(adNum)
 
 //调试日志开关
 var log = 0;
@@ -145,13 +154,17 @@ async function all() {
                 console.log(`此次随机的结果为看${videoNum}个视频!`);
             }
             if (videoNum > 0)
-                await watchVideo(videoNum, videoType());
+                await watchVideo(videoNum);
 
         }
 
+        var adCount = 0;
         //看任务里面的广告
         for (let i = 0; i < taskList.data.ads_task.length; i++) {
             if (taskList.data.ads_task[i].is_finish == 0) {
+                if (adCount >= adNum)
+                    break;
+                adCount++;
                 console.log(`看广告ing...`)
                 await ckck()
                 id = taskList.data.ads_task[i].id
@@ -160,8 +173,6 @@ async function all() {
                     console.log(JSON.stringify(datas));
                 }
                 await $.wait(RT(30000, 36000))
-                if (i + 1 >= adNum)
-                    break;
             }
         }
 
@@ -188,11 +199,16 @@ async function all() {
                         seperator2 + date.getSeconds();
                     return currentdate;
                 }
-                firstTxLog = txdata.data.list[0];
-                //循环查看通宝列表
-                txDate = (firstTxLog.add_time).split(` `)[0];
-                nowDate = getCurrentDate().split(` `)[0];
-                if (firstTxLog.use_type == 1 && txDate != nowDate) {
+                firstTxLog = txdata.data.list.find(x => x.use_type == 1);
+                canTx = false;
+                if (typeof firstTxLog == 'undefined')
+                    canTx = true;
+                else {
+                    txDate = (firstTxLog.add_time).split(` `)[0];
+                    nowDate = getCurrentDate().split(` `)[0];
+                    canTx = firstTxLog.use_type == 1 && txDate != nowDate;
+                }
+                if (canTx) {
                     for (let i = 0; i < shareNum; i++) {
                         //做分享是为了更好的提现！
                         await ckck()
@@ -204,7 +220,7 @@ async function all() {
                     if (txResult.code == 0) {
                         console.log(`提0.3元 : 成功`);
                     }
-                } else if (txdata.data.list[i].use_type == 1 && txDate == nowDate) {
+                } else{
                     console.log(`${txDate}今日已提现`);
                 }
             }
@@ -303,8 +319,8 @@ function articleType() {
     }, {
         "id": "34", "name": "党媒推荐"
     }];
-
-    return CIdArray[Math.floor((Math.random() * CIdArray.length))];
+    var rndIndex = RT(0, CIdArray.length - 1);
+    return CIdArray[rndIndex];
 }
 
 
@@ -315,30 +331,31 @@ async function readArticle(num) {
     while (articleList.length < num) {
         var type = articleType()
         // await task(`get`, `https://api.st615.com/v2/article/list?cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8`, headerss), articleData = DATA
-        try{
+        try {
             await task(`get`, `https://api.st615.com/v1/article/list?type=2&cid=${type.id}&page=1&limit=20&terminal=Apple&version=1.2.8&token=${jztoken}`, headerss), articleData = DATA
             if (articleData.code == 0) {
                 articleList = articleList.concat(articleData.data.list)
                 await $.wait(3000)
             }
         }
-        catch{
+        catch {
         }
     }
-
-    for (let i = 0; i < num; i++) {
-        await ckck()
-        spids = articleList[i].id
-        console.log(`开始读${type.name}类的《${articleList[i].title}》...预计花30秒`);
-        //先等待30秒之后
-        await $.wait(RT(30000, 36000))
-        //再提交阅读完成信号
-        await task(`post`, `https://api.st615.com/v2/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
-        // await task(`post`, `https://api.st615.com/v1/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
-        if (data.code == 0) {
-            console.log(`${data.msg},获得金币${data.data.coin}`);
-        } else {
-            console.log(JSON.stringify(data));
+    if (articleList.length >= num) {
+        for (let i = 0; i < num; i++) {
+            await ckck()
+            spids = articleList[i].id
+            console.log(`开始读${type.name}类的《${articleList[i].title}》...预计花30秒`);
+            //先等待30秒之后
+            await $.wait(RT(30000, 36000))
+            //再提交阅读完成信号
+            await task(`post`, `https://api.st615.com/v2/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
+            // await task(`post`, `https://api.st615.com/v1/article/finish`, headerss, `id=${spids}&token=${jztoken}`), data = DATA
+            if (data.code == 0) {
+                console.log(`${data.msg},获得金币${data.data.coin}`);
+            } else {
+                console.log(JSON.stringify(data));
+            }
         }
     }
 }
@@ -346,19 +363,33 @@ async function readArticle(num) {
 //视频类别
 function videoType() {
     var CIdArray = [{ "id": -1, "name": "关注" }, { "id": 0, "name": "推荐" }, { "id": -3, "name": "小视频" }, { "id": "35", "name": "影视" }, { "id": "36", "name": "游戏" }, { "id": "37", "name": "音乐" }, { "id": "38", "name": "VLOG" }, { "id": "39", "name": "美食" }, { "id": "40", "name": "农人" }, { "id": "41", "name": "搞笑" }, { "id": "42", "name": "旅游" }, { "id": "43", "name": "综艺" }, { "id": "44", "name": "宠物" }, { "id": "45", "name": "娱乐" }, { "id": "46", "name": "科技" }, { "id": "47", "name": "军事" }, { "id": "48", "name": "懂车帝" }, { "id": "49", "name": "体育" }, { "id": "50", "name": "NBA" }, { "id": "51", "name": "文化" }, { "id": "52", "name": "手工" }, { "id": "53", "name": "经济" }];
-    return CIdArray[Math.floor((Math.random() * CIdArray.length))];
+    var rndIndex = RT(0, CIdArray.length - 1);
+    return CIdArray[rndIndex];
 }
 
 //看视频
-async function watchVideo(num, type) {
-
+async function watchVideo(num) {
     await ckck()
-    await task(`get`, `https://api.st615.com/v2/article/list?type=2&cid=${type.id}&page=1&terminal=Apple&version=1.2.8`, headerss), videoData = DATA
+
+    var videoList = [];
+    while (videoList.length < num) {
+        var type = videoType()
+        try {
+            await task(`get`, `https://api.st615.com/v2/article/list?type=2&cid=${type.id}&page=1&terminal=Apple&version=1.2.8`, headerss), videoData = DATA
+            if (videoData.code == 0) {
+                videoList = videoList.concat(videoData.data.list)
+                await $.wait(3000)
+            }
+        }
+        catch {
+        }
+    }
+
     await $.wait(3000)
-    if (videoData.code == 0) {
+    if (videoList.length >= num) {
         for (let i = 0; i < num; i++) {
             await ckck()
-            spids = videoData.data.list[i].id
+            spids = videoList[i].id
             console.log(`开始看${type.name}类的《${videoData.data.list[i].title}》...预计花31秒`);
             //先等待31秒之后
             await $.wait(RT(31000, 33000))
