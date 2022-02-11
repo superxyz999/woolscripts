@@ -44,7 +44,7 @@ else
 let dsj_headerArr = []
 let dsj_headers = ""
 
-const dianshijia_API = 'http://api.gaoqingdianshi.com/api'
+const dianshijia_API = 'http://47.95.69.248/api'
 const walkstep = '20000';
 const gametimes = "1999";
 
@@ -223,7 +223,7 @@ function total() {
                     for (i = 0; i < result.data.tempCoin.length; i++) {
                         coinid = result.data.tempCoin[i].id
                         $.get({
-                            url: `http://api.gaoqingdianshi.com/api/coin/temp/exchange?id=` + coinid,
+                            url: `${dianshijia_API}/coin/temp/exchange?id=` + coinid,
                             headers: DSJ_headers
                         }, (error, response, data))
                     }
@@ -251,8 +251,8 @@ function wx_tasks(tkcode) {
 function wx_dotask(code) {
     return new Promise((resolve, reject) => {
         let url = {
-            url: `https://api.dianshihome.com/api/v4/task/complete?code=${code}&comType=1`,
-            headers: JSON.parse(`{"userid":"${JSON.parse(current_dsj_header).userid}","authorization":"${JSON.parse(current_dsj_header).authorization}","appid":"3c3065a6f979f9b2b49e98ea1d02f313","Host":"api.dianshihome.com","content-type":"application/x-www-form-urlencoded","Referer":"https://servicewechat.com/wx9e8718eb2360dfb8/109/page-frame.html"}`)
+            url: `https://123.56.125.184/api/v4/task/complete?code=${code}&comType=1`,
+            headers: JSON.parse(`{"userid":"${JSON.parse(current_dsj_header).userid}","authorization":"${JSON.parse(current_dsj_header).authorization}","appid":"3c3065a6f979f9b2b49e98ea1d02f313","Host":"123.56.125.184","content-type":"application/x-www-form-urlencoded","Referer":"https://servicewechat.com/wx9e8718eb2360dfb8/109/page-frame.html"}`)
         }
         $.get(url, (error, response, data) => {
             //console.log(data)
@@ -301,7 +301,7 @@ function dotask(code) {
 function dsj_rwzt() {
     return new Promise((resolve) => {
         let url = {
-            url: `http://act.gaoqingdianshi.com/api/v5/task/get`,
+            url: `http://123.56.125.184/api/v5/task/get`,
             headers: JSON.parse(current_dsj_header),
         }
         $.get(url, async (err, resp, data) => {
@@ -372,7 +372,7 @@ function dsj_rwzt() {
 function video() {
     return new Promise((resolve, reject) => {
         let url = {
-            url: 'http://api.gaoqingdianshi.com/api/v5/task/complete?code=task_xiaoman&comType=0',
+            url: `${dianshijia_API}/v7/task/complete?code=task_xiaoman&comType=0`,
             headers: JSON.parse(current_dsj_header),
         }
         $.get(url, async (err, resp, data) => {
@@ -396,7 +396,7 @@ function video() {
 function signin() {
     return new Promise((resolve, reject) => {
         let url = {
-            url: 'http://api.gaoqingdianshi.com/api/v5/sign/signin?accelerate=0&ext=0&ticket=',
+            url: 'http://123.56.125.184/api/v7/sign/signin?accelerate=0&ext=0&ticket=',
             headers: JSON.parse(current_dsj_header),
         }
         $.get(url, async (error, response, data) => {
@@ -432,7 +432,7 @@ function signin() {
 function dsj_led() {
     return new Promise((resolve, reject) => {
         let url = {
-            url: `http://api.gaoqingdianshi.com/api/sign/chooseAdditionalReward?rewardId=${current_reward_id}`,
+            url: `http://123.56.125.184/api/sign/chooseAdditionalReward?rewardId=${current_reward_id}`,
             headers: JSON.parse(current_dsj_header),
         }
         $.get(url, (error, response, data) => {
@@ -474,7 +474,7 @@ async function run() {
 function sleep() {
     return new Promise((resolve, reject) => {
         let url = {
-            url: `http://api.gaoqingdianshi.com/api/taskext/getSleep?ext=1`,
+            url: `http://123.56.125.184/api/taskext/getSleep?ext=1`,
             headers: JSON.parse(current_dsj_header),
         }
         $.get(url, (error, response, data) => {
@@ -889,7 +889,7 @@ async function getdsj_header() {
         userid = result.userid
         authorization = result.authorization
         deviceId = result.deviceId
-        let bodyVal = { 'uuid': uuid, 'userid': userid, 'authorization': authorization, 'deviceId': deviceId, 'Host': 'api.gaoqingdianshi.com', "appid": "0990028e54b2329f2dfb4e5aeea6d625" }
+        let bodyVal = { 'uuid': uuid, 'userid': userid, 'authorization': authorization, 'deviceId': deviceId, 'Host': '123.56.125.184', "appid": "0990028e54b2329f2dfb4e5aeea6d625" }
         bodyVal2 = JSON.stringify(bodyVal)
 
         if (dsj_header) {

@@ -59,8 +59,8 @@ const TxMap = {
 }
 
 const defaultTx = 1;
-const apiUrl = 'http://api.gaoqingdianshi.com/api/cash/v1/zz/withdrawal';
-const oldApiUrl = 'http://pay.gaoqingdianshi.com/api/v2/cash/withdrawal';
+const apiUrl = 'http://api.mydianshijia.com/api/cash/v1/zz/withdrawal';
+const oldApiUrl = 'http://47.95.69.248/api/v2/cash/withdrawal';
     // var main = async function bingfatixian() {
     //     await Promise.all(accounts.map((account) => {
     //         return tixian(account)
@@ -205,10 +205,10 @@ async function Tixian(account, isrant = false) {
         var requestAPI = apiUrl;
         if (isrant) {
             requestAPI = oldApiUrl
-            headers = { ...headers1, ...{ 'Host': 'pay.gaoqingdianshi.com' } }
+            headers = { ...headers1, ...{ 'Host': '47.95.69.248' } }
         }
         else
-            headers = { ...headers1, ...{ 'Host': 'api.gaoqingdianshi.com' } }
+            headers = { ...headers1, ...{ 'Host': 'api.mydianshijia.com' } }
         var isSucess = false
         var currentIndex = 0
         let promise = new Promise((resolve, reject) => {
@@ -252,8 +252,8 @@ async function Tixian(account, isrant = false) {
  * @returns void
  */
 async function queryCash(account) {
-    const headers = { ...getHeader(account), ...{ 'Host': 'pay.gaoqingdianshi.com' } }
-    const url = `http://pay.gaoqingdianshi.com/api/cash/info`
+    const headers = { ...getHeader(account), ...{ 'Host': '47.95.69.248' } }
+    const url = `http://47.95.69.248/api/cash/info`
     var result = await axios.get(url, { headers })
     var resultMessage = '';
     if (result.data.errCode == 0) {
