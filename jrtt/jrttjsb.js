@@ -36,7 +36,7 @@ let notifyStr = ''
 let rndtime = "" //毫秒
 let httpResult //global buffer
 
-let host = 'i.snssdk.com'
+let host = 'api3-normal-lq.toutiaoapi.com'
 let hostname = 'https://' + host
 
 let userAgent = ($.isNode() ? process.env.jrttjsbUA : $.getdata('jrttjsbUA')) || 'Dalvik/2.1.0 (Linux; U; Android 7.1.2; VOG-AL10 Build/HUAWEIVOG-AL10) NewsArticle/8.2.8 tt-ok/3.10.0.2';
