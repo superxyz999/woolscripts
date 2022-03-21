@@ -242,7 +242,7 @@ async function ReadArticles() {
 async function ReadArtsReward() {
     let caller = printCaller()
     let rndGroupId = Math.floor(Math.random()*7000000000000000000)
-    let url = `${hostname}/luckycat/lite/v1/activity/done_whole_scene_task/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone`
+    let url = `${hostname}/luckycat/lite/v1/activity/done_whole_scene_task/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let body = `{"is_golden_egg":false,"scene_key":"article_detail","group_id":"${rndGroupId}"}`
     let urlObject = populatePostUrl(url,body)
     await httpPost(urlObject,caller)
@@ -260,7 +260,7 @@ async function ReadArtsReward() {
 async function DailyArtsReward() {
     let caller = printCaller()
     let rndGroupId = Math.floor(Math.random()*7000000000000000000)
-    let url = `${hostname}/score_task/v1/task/get_read_bonus/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone&group_id=${rndGroupId}`
+    let url = `${hostname}/score_task/v1/task/get_read_bonus/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8&group_id=${rndGroupId}`
     let urlObject = populatePostUrl(url)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -278,7 +278,7 @@ async function DailyPushReward() {
     let caller = printCaller()
     let timeInMS = Math.round(new Date().getTime())
     let rndGroupId = Math.floor(Math.random()*7000000000000000000)
-    let url = `${hostname}/score_task/v1/task/get_read_bonus/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone&group_id=${rndGroupId}&impression_type=push`
+    let url = `${hostname}/score_task/v1/task/get_read_bonus/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8&group_id=${rndGroupId}&impression_type=push`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -294,7 +294,7 @@ async function DailyPushReward() {
 //阅读翻倍
 async function ReadDouble() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/activity/double_whole_scene_task/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone`
+    let url = `${hostname}/luckycat/lite/v1/activity/double_whole_scene_task/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let body = `{}`
     let urlObject = populatePostUrl(url,body)
     await httpPost(urlObject,caller)
@@ -310,7 +310,7 @@ async function ReadDouble() {
 
 async function GetNewTabs() {
     let caller = printCaller()
-    let url = `${hostname}/score_task/v1/user/new_tabs/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/score_task/v1/user/new_tabs/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -329,7 +329,7 @@ async function GetNewTabs() {
 async function PostInviteCode() {
     let caller = printCaller()
     let body = `{"invitecode" : "1173836876"}`
-    let url = `${hostname}/luckycat/lite/v1/invite/post_invite_code/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/invite/post_invite_code/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populatePostUrl(url,body)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -340,7 +340,7 @@ async function PostInviteCode() {
 //金币收入
 async function QueryCoinInfo() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/user/profit_detail/?offset=0&num=100&income_type=2&aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/user/profit_detail/?offset=0&num=100&income_type=2&aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -356,7 +356,7 @@ async function QueryCoinInfo() {
 //查询用户信息,任务状态
 async function QueryUserInfo(doTask) {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/task/page_data/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/task/page_data/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -393,7 +393,7 @@ async function QueryUserInfo(doTask) {
 //签到
 async function SignIn() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/sign_in/action?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/sign_in/action?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populatePostUrl(url)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -447,7 +447,7 @@ async function ExcitationAd(task_id) {
 //查询走路状态
 async function QueryWalkInfo() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/walk/page_data/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone`
+    let url = `${hostname}/luckycat/lite/v1/walk/page_data/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -464,7 +464,7 @@ async function QueryWalkInfo() {
 async function GetWalkBonus() {
     let caller = printCaller()
     let nowtime = Math.round(new Date().getTime()/1000)
-    let url = `${hostname}/luckycat/lite/v1/walk/bonus/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone`
+    let url = `${hostname}/luckycat/lite/v1/walk/bonus/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let body = `{"task_id":136,"enable_preload_exciting_video":0,"client_time":${nowtime},"rit":"","use_ecpm":0}`
     let urlObject = populatePostUrl(url,body)
     await httpPost(urlObject,caller)
@@ -481,7 +481,7 @@ async function GetWalkBonus() {
 //吃饭补贴
 async function DoneEat() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/eat/done_eat/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/eat/done_eat/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populatePostUrl(url)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -499,7 +499,7 @@ async function QuerySleepStatus() {
     let caller = printCaller()
     let curTime = new Date()
     let curHour = curTime.getHours()
-    let url = `${hostname}/luckycat/lite/v1/sleep/status/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/sleep/status/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -545,7 +545,7 @@ async function QuerySleepStatus() {
 //睡觉醒来
 async function SleepStop() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/sleep/stop/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/sleep/stop/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populatePostUrl(url)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -581,7 +581,7 @@ async function SleepDone(amount) {
 //开始睡觉
 async function SleepStart() {
     let caller = printCaller()
-    let url = `${hostname}/luckycat/lite/v1/sleep/start/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/luckycat/lite/v1/sleep/start/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populatePostUrl(url)
     await httpPost(urlObject,caller)
     let result = httpResult;
@@ -598,7 +598,7 @@ async function SleepStart() {
 //查询农场状态
 async function QueryFarmInfo() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/polling_info?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/polling_info?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -622,7 +622,7 @@ async function QueryFarmInfo() {
 //进入农场
 async function EnterFarm() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/home_info?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/home_info?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -654,7 +654,7 @@ async function FarmOfflineDouble() {
 //农场-领取三餐礼包
 async function RewardFarmThreeGift(gift_id) {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/reward/gift?game_client_version_code=2&gift_id=${gift_id}&watch_ad=0&double=0&aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/reward/gift?game_client_version_code=2&gift_id=${gift_id}&watch_ad=0&double=0&aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -670,7 +670,7 @@ async function RewardFarmThreeGift(gift_id) {
 //农场-三餐礼包状态
 async function QueryFarmThreeGift() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/gift/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/gift/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -690,7 +690,7 @@ async function QueryFarmThreeGift() {
 //查询农场任务列表
 async function QueryFarmTask() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/daily_task/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/daily_task/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -727,7 +727,7 @@ async function RewardFarmTask(id) {
 //农场-浇水
 async function FarmWater() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/land_water?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/land_water?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -747,7 +747,7 @@ async function FarmWater() {
 //农场-开宝箱
 async function FarmOpenBox() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/box/open?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/box/open?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -764,7 +764,7 @@ async function FarmOpenBox() {
 //农场-宝箱视频
 async function FarmOpenBoxVideo() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/excitation_ad/add?excitation_ad_score_amount=134&device_id=2392172203611735&aid=35&os_version=15.0&update_version_code=85221`
+    let url = `${hostname}/ttgame/game_farm/excitation_ad/add?excitation_ad_score_amount=134&device_id=2392172203611735&aid=35&os_version=15.0&update_version_code=86920`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -780,7 +780,7 @@ async function FarmOpenBoxVideo() {
 //农场-签到状态
 async function QueryFarmSignStatus() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/sign_in/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/sign_in/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -801,7 +801,7 @@ async function QueryFarmSignStatus() {
 //农场-签到
 async function FarmSign() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/reward/sign_in?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/reward/sign_in?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -818,7 +818,7 @@ async function FarmSign() {
 //农场-签到视频翻倍
 async function FarmSignDouble() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/reward/double_sign_in?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/reward/double_sign_in?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -835,7 +835,7 @@ async function FarmSignDouble() {
 //农场-土地状态
 async function QueryFarmLandStatus() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/home_info?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/home_info?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -856,7 +856,7 @@ async function QueryFarmLandStatus() {
 //农场-土地解锁
 async function FarmUnlock(land_id) {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_farm/land/unlock?land_id=${land_id}&aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_farm/land/unlock?land_id=${land_id}&aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -872,7 +872,7 @@ async function FarmUnlock(land_id) {
 //种树-签到状态
 async function QueryTreeSignStatus() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/sign_in/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/sign_in/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -890,7 +890,7 @@ async function QueryTreeSignStatus() {
 //种树-签到
 async function TreeSign() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/sign_in/reward?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/sign_in/reward?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -906,7 +906,7 @@ async function TreeSign() {
 //种树-二选一-选项
 async function QueryTreeChallenge() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/challenge/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/challenge/list?aid=35&update_version_code=update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -946,7 +946,7 @@ async function TreeChallengeChoose(id) {
 //种树-二选一-领奖
 async function TreeChallengeReward() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/challenge/reward?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/challenge/reward?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -962,7 +962,7 @@ async function TreeChallengeReward() {
 //种树-化肥签到
 async function TreeNutrientSign() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/nutrient/sign_in?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/nutrient/sign_in?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -982,7 +982,7 @@ async function TreeNutrientSign() {
 //种树-领取三餐礼包
 async function RewardTreeThreeGift(task_id) {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/three_gift/reward?task_id=${task_id}&watch_ad=0&extra_ad_num=0&aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/three_gift/reward?task_id=${task_id}&watch_ad=0&extra_ad_num=0&aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -1000,7 +1000,7 @@ async function QueryTreeThreeGift() {
     let caller = printCaller()
     let curTime = new Date()
     let curHour = curTime.getHours()
-    let url = `${hostname}/ttgame/game_orchard/three_gift/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/three_gift/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -1020,7 +1020,7 @@ async function QueryTreeThreeGift() {
 //种树-水滴任务列表
 async function QueryTreeWaterTask() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/tasks/list?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/tasks/list?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -1057,7 +1057,7 @@ async function TreeWaterReward(task_id) {
 //种树-浇水
 async function TreeWater() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/tree/water?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/tree/water?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -1103,7 +1103,7 @@ async function TreeWaterTenTimes() {
 //种树-信息
 async function QueryTreeStatus() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/polling_info?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/polling_info?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -1132,7 +1132,7 @@ async function QueryTreeStatus() {
 //种树-水瓶奖励
 async function RewardTreeWaterBottle() {
     let caller = printCaller()
-    let url = `${hostname}/ttgame/game_orchard/water_bottle/reward?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/ttgame/game_orchard/water_bottle/reward?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
