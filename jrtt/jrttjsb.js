@@ -195,7 +195,7 @@ async function RunMultiUser() {
 //阅读列表
 async function ListArts() {
     let caller = printCaller()
-    let url = `${hostname}/api/news/feed/v64/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/api/news/feed/v64/?aid=35&update_version_code=86920&os_version=15.2.1&ssmix=a&device_platform=iphone&iid=514987764513507&ab_client=a1,f2,f7,e1&device_type=iPhone 8`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
