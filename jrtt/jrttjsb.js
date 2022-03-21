@@ -195,7 +195,7 @@ async function RunMultiUser() {
 //阅读列表
 async function ListArts() {
     let caller = printCaller()
-    let url = `${hostname}/api/news/feed/v64/?aid=35&update_version_code=85221&device_platform=iphone&&device_type=iPhone13,2`
+    let url = `${hostname}/api/news/feed/v64/?aid=35&update_version_code=86920&device_platform=iphone&&device_type=iPhone10,1`
     let urlObject = populateGetUrl(url)
     await httpGet(urlObject,caller)
     let result = httpResult;
@@ -242,7 +242,7 @@ async function ReadArticles() {
 async function ReadArtsReward() {
     let caller = printCaller()
     let rndGroupId = Math.floor(Math.random()*7000000000000000000)
-    let url = `${hostname}/luckycat/lite/v1/activity/done_whole_scene_task/?aid=35&update_version_code=85221&os_version=15.0&device_platform=iphone`
+    let url = `${hostname}/luckycat/lite/v1/activity/done_whole_scene_task/?aid=35&update_version_code=86920&os_version=15.2.1&device_platform=iphone 8`
     let body = `{"is_golden_egg":false,"scene_key":"article_detail","group_id":"${rndGroupId}"}`
     let urlObject = populatePostUrl(url,body)
     await httpPost(urlObject,caller)
